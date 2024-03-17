@@ -12,8 +12,6 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-    
     if (playerSelection == "rock" && computerSelection == "scissors" || playerSelection == "paper" && computerSelection == "rock" || playerSelection == "scissors" && computerSelection == "paper") {
         return `You win! ${toCapitalize(playerSelection)} beats ${toCapitalize(computerSelection)}.`;
     } else if (playerSelection == computerSelection) {
@@ -27,18 +25,37 @@ function toCapitalize(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+function checkPlayerInput(playerInput){
+        playerInput = playerInput.toLowerCase()
+        while (playerInput !== "rock" &&  playerInput !== "paper" && playerInput !=="scissors"){
+            playerInput = prompt(message = "You must write rock, paper or scissors")
+        }
+        return playerInput
+}
+
+
+function printFinalScore(playerScore, computerScore){
+    if (playerScore > computerScore){
+        console.log(`You win! ${playerScore}:${computerScore}`)
+    } else if (computerScore > playerScore) {
+        console.log(`You lose! ${computerScore}:${playerScore}`)
+    } else {
+        console.log(`Its a tie ${computerScore}:${playerScore}`)
+    }
+}
+
 function playGame(){
 
     let playerScore = 0;
     let computerScore = 0;
 
     for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt(message = "Rock, paper or scissors?");
+        let playerSelection = checkPlayerInput(prompt(message = "Rock, paper or scissors?"));
         let computerSelection = getComputerChoice();
-        let round = playRound(playerSelection, computerSelection)
-        console.log(`${round}`)
+        let roundResult = playRound(playerSelection, computerSelection)
+        console.log(`${roundResult}`)
         
-        switch(round.charAt(4)) {
+        switch(roundResult.charAt(4)) {
             case "w": 
                 playerScore++;
                 break;
@@ -48,13 +65,7 @@ function playGame(){
         }
         
         if (i == 4) {
-            if (playerScore > computerScore){
-                    console.log(`You win! ${playerScore}:${computerScore}`)
-                } else if (computerScore > playerScore) {
-                    console.log(`You lose! ${computerScore}:${playerScore}`)
-                } else {
-                    console.log(`Its a tie ${computerScore}:${playerScore}`)
-                }
+            printFinalScore(playerScore, computerScore);
         }
     }
 }
